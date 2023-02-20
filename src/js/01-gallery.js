@@ -1,32 +1,30 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 const gallery = document.querySelector(".gallery");
-const items = [];
-galleryItems.forEach((element) => {
-    const galleryItem = document.createElement("div");
-    galleryItem.classList.add("gallery__item");
-    const galleryLink = document.createElement("a");
-    galleryLink.classList.add("gallery__link");
-    galleryLink.href = element.original;
-    const galleryImg = document.createElement("img");
-    galleryImg.classList.add("gallery__image");
-    galleryImg.src = element.preview;
-    galleryImg.setAttribute("data-source", element.original);
-    galleryImg.alt = element.description;
-    galleryItem.append(galleryLink);
-    galleryLink.append(galleryImg);
-    items.push(galleryItem);
-});
-gallery.append(...items);
+console.log(gallery)
+const markup = galleryItems.map(({preview, original, description})=> {
+return `<div class="gallery__item">
+<a class="gallery__link" href="${original}">
+  <img
+    class="gallery__image"
+    src="${preview}"
+    data-source="${original}"
+    alt="${description}"
+  />
+</a>
+</div>`
+}).join('');
+gallery.insertAdjacentHTML("beforeend", markup);
+
 document.addEventListener("click", (e) => {
     e.preventDefault();
     if (e.target.nodeName !== "IMG"){
         return;
     }
-    const imgSelected = e.target.getAttribute("data-sourse");
+    const imgSelected = e.target.dataset.source;
     const template = basicLightbox.create(
-        `
-        <img src="${imgSelected}" width="800" height="600">`,
+        `<img src="${imgSelected}" width="800" height="600">`
+        ,
         {
             onShow: () => {
                 document.addEventListener("keydown", closeModal);
@@ -38,7 +36,7 @@ document.addEventListener("click", (e) => {
     );
     template.show();
     function closeModal(e) {
-        if (e.key ==="Escape"){
+        if (e.code ==="Escape"){
             template.close();
         }
     }
