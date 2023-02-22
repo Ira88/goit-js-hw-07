@@ -13,8 +13,9 @@ return `<div class="gallery__item">
 }).join('');
 gallery.insertAdjacentHTML("beforeend", usage);
 new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
     captionDelay: 250,
     captionPosition: 'bottom',
-    captionsData: 'alt',
+    
 });
 console.log(galleryItems);
